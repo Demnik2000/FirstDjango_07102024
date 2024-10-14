@@ -1,6 +1,7 @@
+from django.db.models.expressions import result
 from django.http import HttpResponseNotFound, HttpResponse
 from django.shortcuts import render
-
+from django.template.context_processors import request
 
 author = {
         'Имя': 'Иван',
@@ -20,11 +21,16 @@ items = [
 
 
 def home(request):
-    text = """
-    <h1>"Извучаем django"</h1>
-    <strong>Автор</strong>: <i>Иванов И.П.</i>
-    """
-    return HttpResponse(text)
+    # text = """
+    # <h1>"Извучаем django"</h1>
+    # <strong>Автор</strong>: <i>Иванов И.П.</i>
+    # """
+    # return HttpResponse(text)
+    context = {
+        "name": "Иванов Петр Семенович",
+        "email": "my_mail@mail.ru"
+    }
+    return render(request, "index.html", context)
 
 
 def about(request):
@@ -37,12 +43,6 @@ def about(request):
         """
     return HttpResponse(text)
 
-# /item/1
-#/item/2
-#...
-#/item/n - 1
-#/item/n
-
 def get_item(request, item_id: int):
     """ По указанному id возвращает элемент из списка """
     for item in items:
@@ -50,13 +50,14 @@ def get_item(request, item_id: int):
             result = f"""
             <h2> Имя: {item['name']} </h2>
             <p> Колличество: {item['quantity']} </p>
+            <p> <a href='/items'> back to items list </a>
             """
             return HttpResponse(result)
     return HttpResponseNotFound(f'Item with id={item_id} not found')
 
 
+def get_items(request):
 
-
-
-
+    context = {"items": items}
+    return render(request, "items_list.html", context)
 
