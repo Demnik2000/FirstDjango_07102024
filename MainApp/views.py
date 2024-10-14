@@ -1,3 +1,5 @@
+from lib2to3.fixes.fix_input import context
+
 from django.db.models.expressions import result
 from django.http import HttpResponseNotFound, HttpResponse
 from django.shortcuts import render
@@ -34,25 +36,23 @@ def home(request):
 
 
 def about(request):
-    text = f"""
-        Имя: {author["Имя"]}<br>
-        Отчество: {author['Отчество']}<br>
-        Фамилия: {author['Фамилия']}<br>
-        телефон: {author['телефон']}<br>
-        email: {author['email']}<br>
-        """
-    return HttpResponse(text)
+    author = {
+        'name': 'Иван',
+        "middle_name": "Петрович",
+        "last_name": "Иванов",
+        "phone": "8-923-600-01-02",
+        "email": "vasya@mail.ru"
+    }
+    return render(request, "about.html", {"author": author})
+
+
 
 def get_item(request, item_id: int):
     """ По указанному id возвращает элемент из списка """
     for item in items:
         if item['id'] == item_id:
-            result = f"""
-            <h2> Имя: {item['name']} </h2>
-            <p> Колличество: {item['quantity']} </p>
-            <p> <a href='/items'> back to items list </a>
-            """
-            return HttpResponse(result)
+            context = {"item": item}
+            return  render(request, "item_page.html", context)
     return HttpResponseNotFound(f'Item with id={item_id} not found')
 
 
