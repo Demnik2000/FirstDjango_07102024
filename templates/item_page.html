@@ -13,11 +13,12 @@
     </header>
 
     <h2> Имя: {{ item.name }} </h2>
-    {% if item.quantity == 0 %}
+    {% if item.count == 0 %}
         <p> Количество: товар отсутствует</p>
     {% else %}
-        <p> Колличество: {{item.quantity}} </p>
+        <p> Колличество: {{item.count}} </p>
     {% endif %}
+        <p> Бренд: {{item.brand</p>
 
     <p> <a href='/items'> back to items list </a>
 
