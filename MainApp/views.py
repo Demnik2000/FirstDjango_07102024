@@ -32,7 +32,7 @@ def get_item(request, item_id: int):
     else:
         context = {
             "item": item,
-            # "colors": item.colors.all(),
+            "colors": item.colors.all(),
         }
         return render(request, "item_page.html", context)
 
